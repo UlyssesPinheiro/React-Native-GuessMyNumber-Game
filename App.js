@@ -9,6 +9,7 @@ import Color from "./Helper/Color";
 import GameOverScreen from "./screens/GameOverScreen";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState("");
@@ -29,8 +30,9 @@ export default function App() {
     setGameIsOver(false);
   }
 
-  function gameOverHandler() {
+  function gameOverHandler(numberOfRounds) {
     setGameIsOver(true);
+    setGuessRounds(numberOfRounds);
   }
 
   function startNewGameHandler() {
@@ -57,19 +59,22 @@ export default function App() {
   }
 
   return (
-    <LinearGradient
-      colors={[Color.primary700, Color.secondary500]}
-      style={styles.rootScreen}
-    >
-      <ImageBackground
+    <>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[Color.primary700, Color.secondary500]}
         style={styles.rootScreen}
-        resizeMode="cover"
-        source={Dices}
-        imageStyle={{ opacity: 0.15 }}
       >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          style={styles.rootScreen}
+          resizeMode="cover"
+          source={Dices}
+          imageStyle={{ opacity: 0.15 }}
+        >
+          <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 

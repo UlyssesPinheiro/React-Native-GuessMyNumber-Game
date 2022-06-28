@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
 import { Ionicons } from "@expo/vector-icons";
+import GuessLogItem from "../components/game/GuessLogItem";
+import { FlatList } from "react-native-web";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -27,7 +29,7 @@ export default function GameScreen({ userNumber, gameOverHandler }) {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      gameOverHandler(true);
+      gameOverHandler(guessRounds.length);
     }
   }, [currentGuess, userNumber, gameOverHandler]);
 
@@ -82,11 +84,15 @@ export default function GameScreen({ userNumber, gameOverHandler }) {
           </View>
         </View>
       </Card>
-      <View>
+      <ScrollView style={styles.guessView}>
         {guessRounds.map((e, index) => (
-          <Text key={`guess${index}`}>{e}</Text>
+          <GuessLogItem
+            roundNumber={guessRounds.length - index}
+            guess={e}
+            key={`guess${index}`}
+          />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -95,6 +101,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    paddingTop: 50,
+    alignItems: "center",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -106,5 +114,9 @@ const styles = StyleSheet.create({
 
   button: {
     flex: 1,
+  },
+
+  guessView: {
+    width: "100%",
   },
 });
